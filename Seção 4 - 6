@@ -1,0 +1,113 @@
+/*Parte 4 – Funções de Caracteres, Números e Datas (Seção 4)
+Objetivo: Trabalhar com UPPER, INITCAP, SUBSTR, LENGTH, ROUND, TRUNC, MOD, SYSDATE,
+operações com datas.
+1. Exiba os nomes dos clientes com todas as letras em maiúsculas.
+2. Exiba os nomes dos clientes formatados com apenas a primeira letra maiúscula.
+3. Mostre as três primeiras letras do nome de cada cliente.
+4. Exiba o número de caracteres do nome de cada cliente.
+5. Apresente o saldo de todas as contas, arredondado para o inteiro mais próximo.
+6. Exiba o saldo truncado, sem casas decimais.
+7. Mostre o resto da divisão do saldo da conta por 1000.
+8. Exiba a data atual do servidor do banco.
+9. Adicione 30 dias à data atual e exiba como "Data de vencimento simulada".
+10.Exiba o número de dias entre a data de abertura da conta e a data atual.*/
+
+--1
+SELECT UPPER(CLIENTE_NOME) AS NOME_MAIUSCULO
+FROM CLIENTE;
+
+--2
+SELECT INITCAP(CLIENTE_NOME) AS NOME_FORMATADO
+FROM CLIENTE;
+
+--3
+SELECT SUBSTR(CLIENTE_NOME,1,3) AS TRES_PRIMEIRAS_LETRAS
+FROM CLIENTE;
+
+--4
+SELECT CLIENTE_NOME, LENGTH(CLIENTE_NOME) AS QTD_CARACTERES
+FROM CLIENTE;
+
+--5
+SELECT CONTA_NUMERO, ROUND(SALDO) AS SALDO_ARREDONDADO
+FROM CONTA;
+
+--6
+SELECT CONTA_NUMERO, TRUNC(SALDO) AS SALDO_TRUNCADO
+FROM CONTA;
+
+--7
+SELECT CONTA_NUMERO, MOD(SALDO,1000) AS RESTO_DIVISAO
+FROM CONTA;
+
+--8
+SELECT SYSDATE AS DATA_ATUAL
+FROM DUAL;
+
+--9
+SELECT SYSDATE + 30 AS "Data de vencimento simulada"
+FROM DUAL;
+
+--10
+SELECT CONTA_NUMERO, (SYSDATE - DATA_ABERTURA) AS DIAS_ABERTURA
+FROM CONTA;
+
+
+
+/*Parte 5 – Conversão de Dados e Tratamento de Nulos (Seção 5)
+Objetivo: Trabalhar com TO_CHAR, NVL, CASE, etc.
+11. Apresente o saldo de cada conta formatado como moeda local.
+12. Converta a data de abertura da conta para o formato 'dd/mm/yyyy'.
+13. Exiba o saldo da conta e substitua valores nulos por 0.
+14. Exiba os nomes dos clientes e substitua valores nulos na cidade por 'Sem cidade'.
+15. Classifique os clientes em grupos com base em sua cidade.*/
+
+--11
+SELECT CONTA_NUMERO, TO_CHAR(SALDO,'L999G999D99') AS SALDO_FORMATADO
+FROM CONTA;
+
+--12
+SELECT CONTA_NUMERO, TO_CHAR(DATA_ABERTURA,'DD/MM/YYYY') AS DATA_FORMATADA
+FROM CONTA;
+
+--13
+SELECT CONTA_NUMERO, NVL(SALDO,0) AS SALDO_AJUSTADO
+FROM CONTA;
+
+--14
+SELECT CLIENTE_NOME, NVL(CIDADE,'Sem cidade') AS CIDADE_AJUSTADA
+FROM CLIENTE;
+
+--15
+SELECT CLIENTE_NOME,
+       CASE 
+         WHEN CIDADE = 'Niterói' THEN 'Região Metropolitana'
+         WHEN CIDADE = 'Resende' THEN 'Interior'
+         ELSE 'Outra Região'
+       END AS CLASSIFICACAO
+FROM CLIENTE;
+
+
+
+/*Parte 6 – Junções entre Tabelas (Seção 6)
+Objetivo: Trabalhar com JOIN e OUTER JOIN.
+16. Exiba o nome de cada cliente, o número da conta e o saldo correspondente.
+17. Liste os nomes dos clientes e os nomes das agências onde mantêm conta.
+18. Mostre todas as agências, mesmo aquelas que não possuem clientes vinculados.*/
+
+--16
+SELECT C.CLIENTE_NOME, CT.CONTA_NUMERO, CT.SALDO
+FROM CLIENTE C
+JOIN CONTA CT ON C.CLIENTE_COD = CT.CLIENTE_COD;
+
+--17
+SELECT C.CLIENTE_NOME, A.AGENCIA_NOME
+FROM CLIENTE C
+JOIN CONTA CT ON C.CLIENTE_COD = CT.CLIENTE_COD
+JOIN AGENCIA A ON CT.AGENCIA_COD = A.AGENCIA_COD;
+
+--18
+SELECT A.AGENCIA_NOME, C.CLIENTE_NOME
+FROM AGENCIA A
+LEFT JOIN CONTA CT ON A.AGENCIA_COD = CT.AGENCIA_COD
+LEFT JOIN CLIENTE C ON CT.CLIENTE_COD = C.CLIENTE_COD;
