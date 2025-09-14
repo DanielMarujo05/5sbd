@@ -10,7 +10,7 @@ operações com datas.
 7. Mostre o resto da divisão do saldo da conta por 1000.
 8. Exiba a data atual do servidor do banco.
 9. Adicione 30 dias à data atual e exiba como "Data de vencimento simulada".
-10.Exiba o número de dias entre a data de abertura da conta e a data atual.*/
+10. Exiba o número de dias entre a data de abertura da conta e a data atual.*/
 
 --1
 SELECT UPPER(CLIENTE_NOME) AS NOME_MAIUSCULO
@@ -53,7 +53,6 @@ SELECT CONTA_NUMERO, (SYSDATE - DATA_ABERTURA) AS DIAS_ABERTURA
 FROM CONTA;
 
 
-
 /*Parte 5 – Conversão de Dados e Tratamento de Nulos (Seção 5)
 Objetivo: Trabalhar com TO_CHAR, NVL, CASE, etc.
 11. Apresente o saldo de cada conta formatado como moeda local.
@@ -88,7 +87,6 @@ SELECT CLIENTE_NOME,
 FROM CLIENTE;
 
 
-
 /*Parte 6 – Junções entre Tabelas (Seção 6)
 Objetivo: Trabalhar com JOIN e OUTER JOIN.
 16. Exiba o nome de cada cliente, o número da conta e o saldo correspondente.
@@ -98,16 +96,16 @@ Objetivo: Trabalhar com JOIN e OUTER JOIN.
 --16
 SELECT C.CLIENTE_NOME, CT.CONTA_NUMERO, CT.SALDO
 FROM CLIENTE C
-JOIN CONTA CT ON C.CLIENTE_COD = CT.CLIENTE_COD;
+JOIN CONTA CT ON C.CLIENTE_COD = CT.CLIENTE_CLIENTE_COD;
 
 --17
 SELECT C.CLIENTE_NOME, A.AGENCIA_NOME
 FROM CLIENTE C
-JOIN CONTA CT ON C.CLIENTE_COD = CT.CLIENTE_COD
-JOIN AGENCIA A ON CT.AGENCIA_COD = A.AGENCIA_COD;
+JOIN CONTA CT ON C.CLIENTE_COD = CT.CLIENTE_CLIENTE_COD
+JOIN AGENCIA A ON CT.AGENCIA_AGENCIA_COD = A.AGENCIA_COD;
 
 --18
 SELECT A.AGENCIA_NOME, C.CLIENTE_NOME
 FROM AGENCIA A
-LEFT JOIN CONTA CT ON A.AGENCIA_COD = CT.AGENCIA_COD
-LEFT JOIN CLIENTE C ON CT.CLIENTE_COD = C.CLIENTE_COD;
+LEFT JOIN CONTA CT ON A.AGENCIA_COD = CT.AGENCIA_AGENCIA_COD
+LEFT JOIN CLIENTE C ON CT.CLIENTE_CLIENTE_COD = C.CLIENTE_COD;
